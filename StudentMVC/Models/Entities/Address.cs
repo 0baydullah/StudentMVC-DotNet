@@ -11,8 +11,5 @@ namespace StudentMVC.Models.Entities
         public string City { get; set; }
         public string Country { get; set; }
         public string ZipCode { get; set; }
-        public int SId { get; set; }
-        [ForeignKey("SId")]
-        public Student Student { get; set; }
     }
 }

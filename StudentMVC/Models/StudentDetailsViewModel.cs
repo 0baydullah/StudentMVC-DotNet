@@ -1,21 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace StudentMVC.Models.Entities
+﻿namespace StudentMVC.Models
 {
-    public class Student
+    public class StudentDetailsViewModel
     {
-        [Key]
         public int SId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
-
-        [ForeignKey("AID")]
-        public Address Address { get; set; }
-        
         public double Cgpa { get; set; }
         public DateOnly Dob { get; set; }
+        public string Region { get; set; }
+        public string City { get; set; }
+        public string Country { get; set; }
+        public string ZipCode { get; set; }
     }
 }

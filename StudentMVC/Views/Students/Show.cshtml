@@ -1,0 +1,64 @@
+﻿@model StudentMVC.Models.StudentDetailsViewModel
+
+@{
+    ViewData["Title"] = "Details";
+    var name = Model.FirstName + " " + Model.LastName;
+}
+
+<h1>@name</h1>
+
+<div>
+    <h4>Student</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Id
+        </dt>
+        <dd class="col-sm-10">
+            @Model.SId
+        </dd>
+        <dt class="col-sm-2">
+            Full Name
+        </dt>
+        <dd class="col-sm-10">
+            @name
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Phone)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Phone)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Cgpa)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Cgpa)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Dob)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Dob)
+        </dd>
+        <dt class="col-sm-2">
+            Full Address
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                var address = $"{Model.Region} - {Model.ZipCode}, {Model.City}, {Model.Country}  ";
+            }
+            @address
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.SId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
