@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace StudentMVC.Migrations
 {
     /// <inheritdoc />
-    public partial class _3 : Migration
+    public partial class experimental : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -37,7 +37,7 @@ namespace StudentMVC.Migrations
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AID = table.Column<int>(type: "int", nullable: false),
+                    AId = table.Column<int>(type: "int", nullable: false),
                     Cgpa = table.Column<double>(type: "float", nullable: false),
                     Dob = table.Column<DateOnly>(type: "date", nullable: false)
                 },
@@ -45,17 +45,17 @@ namespace StudentMVC.Migrations
                 {
                     table.PrimaryKey("PK_Students", x => x.SId);
                     table.ForeignKey(
-                        name: "FK_Students_Addresses_AID",
-                        column: x => x.AID,
+                        name: "FK_Students_Addresses_AId",
+                        column: x => x.AId,
                         principalTable: "Addresses",
                         principalColumn: "AId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Students_AID",
+                name: "IX_Students_AId",
                 table: "Students",
-                column: "AID");
+                column: "AId");
         }
 
         /// <inheritdoc />

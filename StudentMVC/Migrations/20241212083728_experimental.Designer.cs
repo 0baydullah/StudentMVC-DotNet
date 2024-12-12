@@ -12,8 +12,8 @@ using StudentMVC.Data;
 namespace StudentMVC.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241212054343_4")]
-    partial class _4
+    [Migration("20241212083728_experimental")]
+    partial class experimental
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

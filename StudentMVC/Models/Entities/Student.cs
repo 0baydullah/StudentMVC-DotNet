@@ -11,7 +11,7 @@ namespace StudentMVC.Models.Entities
         public string LastName { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
-
+        public int AId { get; set; }
         [ForeignKey("AId")]
         public Address Address { get; set; }
         
