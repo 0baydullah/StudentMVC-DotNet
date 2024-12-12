@@ -12,12 +12,14 @@ namespace StudentMVC.Controllers
         
         private readonly ApplicationDbContext context;
 
+        
+
 
         public StudentsController(ApplicationDbContext context )
         {
             this.context = context;
         }
-
+        
         public IActionResult Index()
         {
             var students = context.Students.ToList();
@@ -50,24 +52,41 @@ namespace StudentMVC.Controllers
         [HttpPost]
         public IActionResult Edit(StudentDetailsViewModel stu)
         {
-            var std = context.Students.Find(stu.SId);
-            //var address = context.Addresses.Find(stu.AId);
+         //   var std = context.Students.Find(stu.SId);
+        //    var address = context.Addresses.Find(stu.AId);
+
+    //        var studentsWithAddresses = context.Students
+    //.Include(s => s.Address)
+    //.ToList();
+    //        var stdList = context.Students
+    //.Include(s => s.Address)
+    //.ToList();
+
+
+          //  var std = stdList.FirstOrDefault(s => s.AId == stu.SId);
+
+            var std = context.Students
+    .Include(s => s.Address)
+    .FirstOrDefault(s => s.SId == stu.SId);
+
+
+
             std.Phone = stu.Phone;
             std.Email = stu.Email;
             std.FirstName = stu.FirstName;
             std.LastName = stu.LastName;
             std.Cgpa = stu.Cgpa;
             std.Dob = new DateOnly(2024, 12, 11);
-            std.Address = new Address() { City = stu.City, Region = stu.Region, Country = stu.Country, ZipCode = stu.ZipCode };
+            //std.Address = new Address() { City = stu.City, Region = stu.Region, Country = stu.Country, ZipCode = stu.ZipCode };
 
 
-            //address.City = stu.City;
-            //address.Region = stu.Region;
-            //address.Country = stu.Country;
-            //address.ZipCode = stu.ZipCode;
+            std.Address.City = stu.City;
+            std.Address.Region = stu.Region;
+            std.Address.Country = stu.Country;
+            std.Address.ZipCode = stu.ZipCode;
 
-            
 
+            context.Update(std);
             context.SaveChanges();
 
             return RedirectToAction("Index");
@@ -76,7 +95,9 @@ namespace StudentMVC.Controllers
         {
 
             var stu = context.Students.ToList().FirstOrDefault(m => m.SId == id);
-            var add = context.Addresses.ToList().FirstOrDefault(m => m.AId == stu.Address.AId); ;
+            var add = context.Addresses.ToList().FirstOrDefault(m => m.AId == stu.AId); ;
+
+            
 
             var std = new StudentDetailsViewModel();
 
@@ -89,7 +110,7 @@ namespace StudentMVC.Controllers
             std.Dob = stu.Dob;
 
 
-            std.AId = 8;
+            std.AId = add.AId;
             std.Region = add.Region;
             std.Country = add.Country;
             std.City = add.City;

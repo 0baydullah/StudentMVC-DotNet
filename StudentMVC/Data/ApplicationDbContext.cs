@@ -12,6 +12,16 @@ namespace StudentMVC.Data
 
         public DbSet<Student> Students { get; set; }
         public DbSet<Address> Addresses { get; set; }
-        
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Student>()
+                .HasOne(s => s.Address)
+                .WithMany() // Assuming Address does not reference Student
+                .HasForeignKey(s => s.AId)
+                .OnDelete(DeleteBehavior.Cascade); // Optional: Configure cascade delete
+        }
+
+
     }
 }
