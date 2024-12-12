@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StudentMVC.Data;
 using StudentMVC.Models;
@@ -50,7 +51,11 @@ namespace StudentMVC.Controllers
         [HttpPost]
         public IActionResult Edit(StudentDetailsViewModel stu)
         {
-            var std = context.Students.Find(stu.SId);
+          //  var std = context.Students.Find(stu.SId);
+            var students = context.Students.Include(s=>s.Address);
+            var std = students.FirstOrDefault(s => s.SId == stu.SId);
+            var willbedeleted = std.Address;
+
             //var address = context.Addresses.Find(stu.AId);
             std.Phone = stu.Phone;
             std.Email = stu.Email;
@@ -58,6 +63,7 @@ namespace StudentMVC.Controllers
             std.LastName = stu.LastName;
             std.Cgpa = stu.Cgpa;
             std.Dob = new DateOnly(2024, 12, 11);
+            //context.Addresses.Remove(std.Address);
             std.Address = new Address() { City = stu.City, Region = stu.Region, Country = stu.Country, ZipCode = stu.ZipCode };
 
 
@@ -70,12 +76,16 @@ namespace StudentMVC.Controllers
 
             context.SaveChanges();
 
+            context.Addresses.Remove(willbedeleted);
+            context.SaveChanges();
+
             return RedirectToAction("Index");
         }
         public IActionResult Edit(int id)
         {
 
-            var stu = context.Students.ToList().FirstOrDefault(m => m.SId == id);
+            var stud = context.Students.Include(s=>s.Address).ToList();
+            var stu = stud.FirstOrDefault(m => m.SId == id);
             var add = context.Addresses.ToList().FirstOrDefault(m => m.AId == stu.Address.AId); ;
 
             var std = new StudentDetailsViewModel();
@@ -89,7 +99,7 @@ namespace StudentMVC.Controllers
             std.Dob = stu.Dob;
 
 
-            std.AId = 8;
+            std.AId = add.AId;
             std.Region = add.Region;
             std.Country = add.Country;
             std.City = add.City;
