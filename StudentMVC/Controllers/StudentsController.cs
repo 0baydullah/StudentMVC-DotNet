@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StudentMVC.Data;
 using StudentMVC.Models;
@@ -52,15 +53,6 @@ namespace StudentMVC.Controllers
         [HttpPost]
         public IActionResult Edit(StudentDetailsViewModel stu)
         {
-         //   var std = context.Students.Find(stu.SId);
-        //    var address = context.Addresses.Find(stu.AId);
-
-    //        var studentsWithAddresses = context.Students
-    //.Include(s => s.Address)
-    //.ToList();
-    //        var stdList = context.Students
-    //.Include(s => s.Address)
-    //.ToList();
 
 
           //  var std = stdList.FirstOrDefault(s => s.AId == stu.SId);
@@ -77,7 +69,9 @@ namespace StudentMVC.Controllers
             std.LastName = stu.LastName;
             std.Cgpa = stu.Cgpa;
             std.Dob = new DateOnly(2024, 12, 11);
+
             //std.Address = new Address() { City = stu.City, Region = stu.Region, Country = stu.Country, ZipCode = stu.ZipCode };
+
 
 
             std.Address.City = stu.City;
@@ -89,6 +83,9 @@ namespace StudentMVC.Controllers
             context.Update(std);
             context.SaveChanges();
 
+            context.Addresses.Remove(willbedeleted);
+            context.SaveChanges();
+
             return RedirectToAction("Index");
         }
         public IActionResult Edit(int id)
@@ -96,8 +93,6 @@ namespace StudentMVC.Controllers
 
             var stu = context.Students.ToList().FirstOrDefault(m => m.SId == id);
             var add = context.Addresses.ToList().FirstOrDefault(m => m.AId == stu.AId); ;
-
-            
 
             var std = new StudentDetailsViewModel();
 
