@@ -12,7 +12,7 @@ namespace StudentMVC.Models.Entities
         public string Email { get; set; }
         public string Phone { get; set; }
 
-        [ForeignKey("AID")]
+        [ForeignKey("AId")]
         public Address Address { get; set; }
         
         public double Cgpa { get; set; }

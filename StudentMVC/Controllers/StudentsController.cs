@@ -51,6 +51,7 @@ namespace StudentMVC.Controllers
         public IActionResult Edit(StudentDetailsViewModel stu)
         {
             var std = context.Students.Find(stu.SId);
+            //var address = context.Addresses.Find(stu.AId);
             std.Phone = stu.Phone;
             std.Email = stu.Email;
             std.FirstName = stu.FirstName;
@@ -58,6 +59,14 @@ namespace StudentMVC.Controllers
             std.Cgpa = stu.Cgpa;
             std.Dob = new DateOnly(2024, 12, 11);
             std.Address = new Address() { City = stu.City, Region = stu.Region, Country = stu.Country, ZipCode = stu.ZipCode };
+
+
+            //address.City = stu.City;
+            //address.Region = stu.Region;
+            //address.Country = stu.Country;
+            //address.ZipCode = stu.ZipCode;
+
+            
 
             context.SaveChanges();
 
@@ -67,7 +76,7 @@ namespace StudentMVC.Controllers
         {
 
             var stu = context.Students.ToList().FirstOrDefault(m => m.SId == id);
-            var add = context.Addresses.ToList().FirstOrDefault(m => m.AId == stu.Address.AId);
+            var add = context.Addresses.ToList().FirstOrDefault(m => m.AId == stu.Address.AId); ;
 
             var std = new StudentDetailsViewModel();
 
@@ -80,7 +89,7 @@ namespace StudentMVC.Controllers
             std.Dob = stu.Dob;
 
 
-
+            std.AId = 8;
             std.Region = add.Region;
             std.Country = add.Country;
             std.City = add.City;

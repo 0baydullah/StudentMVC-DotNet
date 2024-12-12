@@ -9,6 +9,7 @@
         public string Phone { get; set; }
         public double Cgpa { get; set; }
         public DateOnly Dob { get; set; }
+        public int AId { get; set; }
         public string Region { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
