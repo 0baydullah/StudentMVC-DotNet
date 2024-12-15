@@ -1,0 +1,122 @@
+﻿@model FormSubmission.Models.Entities.Student
+@using FormSubmission.Models.Entities
+
+@{
+    ViewData["Title"] = "CreateWithJqueryAjax";
+}
+
+<h1>CreateWithJqueryAjax</h1>
+
+<h4>Student</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" id="Name"/>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" id="Email"/>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label"></label>
+                <input asp-for="Phone" class="form-control" id="Phone"/>
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Major" class="control-label"></label>
+                <select asp-for="Major" class="form-control" id="Major" asp-items="Html.GetEnumSelectList<Major>()"><option value="" selected disabled>Select Major</option>Major</select>
+                <span asp-validation-for="Major" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cgpa" class="control-label"></label>
+                <input asp-for="Cgpa" class="form-control" id="Cgpa" />
+                <span asp-validation-for="Cgpa" class="text-danger"></span>
+            </div>
+			<div class="form-group">
+                <button onclick="createStudent()" id="CreateForm" value="Create" class="btn btn-primary">Create</button>
+			</div>
+        </form>
+
+        
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
+<script>
+
+    $(document).ready(function (){
+
+        $("#Create").submit(function (e) {
+          e.preventDefault();
+          console.log("----------------------");
+
+
+            $.ajax({
+                type: "POST",
+                url: "JqueryAjaxFormData",
+                crossDomain: true,
+                data: new FormData(this),
+                processData: false,
+                contentType: false,
+                headers: {
+                    "Accept": "application/json"
+                }
+            }).done(function (res) {
+                console.log(res,"inside success")
+                window.location.href = "Index"
+            }).fail(function (res) {
+                console.log(res)
+                $(".message").text(res.responseJSON.message);
+            });
+
+        });
+      });
+    
+    function createStudent(){
+
+        // $().submit(function (e) {
+        //   e.preventDefault();
+
+        var email = $('#Email'+"hello").val();
+        var name = $('#Name').val()+"fromajax";
+        var phone = $('#Phone').val();
+        var major = $('#Major').val();
+        var cgpa = $('#Cgpa').val();
+        name = "alex";
+        console.log("----------------------");console.log("----------------------");console.log("----------------------");
+
+        $.ajax({
+            url: '@Url.Action("Create","Student")',
+            type: 'POST',
+            dataType:'json',
+            data:{
+                Name: name,
+                Email: email,
+                Phone: phone,
+                Major: major,
+                Cgpa: cgpa
+            },
+            success:function(response){
+                console.log("Success");
+            },
+            error:function(xhr, status, error){
+                console.log("error");
+            }
+        })
+    }
+
+</script>
