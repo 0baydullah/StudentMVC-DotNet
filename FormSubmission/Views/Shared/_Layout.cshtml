@@ -22,15 +22,24 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Student" asp-action="Index">Students</a>
                         </li>
+                         <li class="nav-item"> 
+                             <a class="nav-link text-dark" asp-area="" asp-controller="Student" asp-action="Create">Default</a> 
+                         </li> 
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Student" asp-action="Create">Tag Helper</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Student" asp-action="CreateWithHtmlHelper">@@Html.BeginForm</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Student" asp-action="CreateWithHtmlHelper">Html Helper</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Student" asp-action="CreateWithJqueryAjax">jQueryAjaxFormData</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Student" asp-action="CreateWithJqueryAjax">JQuery Ajax</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Student" asp-action="CreateWithHtmlFormActionFormMethod">FormActionFormMethod</a>
                         </li>
+            @*            <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Student" asp-action="CreateWithJqueryAjaxSerializeFormJson">JQuery Ajax serializeFormJSON</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Student" asp-action="CreateWithAjaxBeginForm">CreateWithAjaxBeginForm</a>
+                        </li> *@
                     </ul>
                 </div>
             </div>

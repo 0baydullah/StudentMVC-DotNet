@@ -1,0 +1,97 @@
+﻿@model FormSubmission.Models.Entities.Student
+@using FormSubmission.Models.Entities
+
+@{
+    ViewData["Title"] = "Create Student";
+}
+
+<h1>Create Student CreateWithJqueryAjaxSerializeFormJson</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <form id="createStudentForm">
+            @Html.AntiForgeryToken() <!-- CSRF Token -->
+
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" id="Name" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" id="Email" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label"></label>
+                <input asp-for="Phone" class="form-control" id="Phone" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Major" class="control-label"></label>
+                <select asp-for="Major" class="form-control" id="Major" asp-items="Html.GetEnumSelectList<Major>()"><option value="" selected disabled>Select Major</option>Major</select>
+                <span asp-validation-for="Major" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cgpa" class="control-label"></label>
+                <input asp-for="Cgpa" class="form-control" id="Cgpa" />
+                <span asp-validation-for="Cgpa" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary" id="submitButton">Create</button>
+            </div>
+        </form>
+        <div id="responseMessage"></div>
+    </div>
+</div>
+
+@section Scripts {
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script>
+            // Function to serialize form data into JSON
+            $.fn.serializeFormJSON = function () {
+                var formData = {};
+                var formArray = this.serializeArray();
+                $.each(formArray, function () {
+                    if (formData[this.name]) {
+                        if (!formData[this.name].push) {
+                            formData[this.name] = [formData[this.name]];
+                        }
+                        formData[this.name].push(this.value || '');
+                    } else {
+                        formData[this.name] = this.value || '';
+                    }
+                });
+                return formData;
+            };
+
+            // AJAX Form Submission
+            $(document).ready(function () {
+                $('#createStudentForm').on('submit', function (e) {
+                    e.preventDefault(); // Prevent form submission
+
+                    // Serialize form data into JSON
+                    var formData = $(this).serializeFormJSON();
+
+                    
+
+                    $.ajax({
+                        url: '/Student/Create', // Endpoint for creating a student
+                        type: 'POST',
+                        contentType: 'application/json', // Send data as JSON
+                        data: JSON.stringify(formData), // Convert JSON object to string
+                        success: function (response) {
+                            console.log("Success:", response);
+                            $('#responseMessage').html('<div class="alert alert-success">Student created successfully!</div>');
+                            // Optionally redirect to another page
+                            window.location.href = '/Student/Index';
+                        },
+                        error: function (xhr) {
+                            console.error("Error:", xhr.responseJSON?.message || xhr.responseText);
+                            $('#responseMessage').html('<div class="alert alert-danger">' + (xhr.responseJSON?.message || "An error occurred.") + '</div>');
+                        }
+                    });
+                });
+            });
+        </script>
+}

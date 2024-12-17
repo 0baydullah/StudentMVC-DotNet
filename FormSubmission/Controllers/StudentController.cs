@@ -50,11 +50,20 @@ namespace FormSubmission.Controllers
         {
             return View();
         }
-        
+
         // GET: Student/Create
         // Create with html helper
 
         public IActionResult CreateWithHtmlHelper()
+        {
+            ModelState.Clear();
+            return View();
+        }
+
+        // GET: Student/Create
+        // Create with Ajax Beginform
+
+        public IActionResult CreateWithAjaxBeginForm()
         {
             ModelState.Clear();
             return View();
@@ -69,15 +78,45 @@ namespace FormSubmission.Controllers
             return View();
         }
 
+        // GET: Student/Create
+        // Create with CreateWithJqueryAjaxSerializeFormJson
+
+        public IActionResult CreateWithJqueryAjaxSerializeFormJson()
+        {
+            ModelState.Clear();
+            return View();
+        }
+
+        // GET: Student/Create
+        // Create with CreateWithHtmlFormAction&FormMethod
+
+        public IActionResult CreateWithHtmlFormActionFormMethod()
+        {
+            ModelState.Clear();
+            return View();
+        }
 
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create1(Student student)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(student);
+                await _context.SaveChangesAsync();
+                return Json(new { success = true, message = "Student created successfully!" });
+            }
+
+            var errorMessages = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+            return BadRequest(new { success = false, message = string.Join(", ", errorMessages) });
+        }
 
 
         // POST: Student/Create with tag helper
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Email,Phone,Major,Cgpa")] Student student)
+        public async Task<IActionResult> Create(Student student)
         {
             if (ModelState.IsValid)
             {
@@ -89,7 +128,7 @@ namespace FormSubmission.Controllers
         }
 
 
-       
+
 
 
 

@@ -5,27 +5,27 @@
     ViewData["Title"] = "CreateWithJqueryAjax";
 }
 
-<h1>CreateWithJqueryAjax</h1>
+<h1>CreateWithJqueryAjax nwt</h1>
 
 <h4>Student</h4>
 <hr />
+
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="col-md-6">
+        <form id="createStudentForm">
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" id="Name"/>
+                <input asp-for="Name" class="form-control" id="Name" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" id="Email"/>
+                <input asp-for="Email" class="form-control" id="Email" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Phone" class="control-label"></label>
-                <input asp-for="Phone" class="form-control" id="Phone"/>
+                <input asp-for="Phone" class="form-control" id="Phone" />
                 <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -38,85 +38,48 @@
                 <input asp-for="Cgpa" class="form-control" id="Cgpa" />
                 <span asp-validation-for="Cgpa" class="text-danger"></span>
             </div>
-			<div class="form-group">
-                <button onclick="createStudent()" id="CreateForm" value="Create" class="btn btn-primary">Create</button>
-			</div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary" id="submitButton">Create</button>
+            </div>
         </form>
-
-        
+        <div id="responseMessage"></div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @* <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> *@
+    <script>
+        $(document).ready(function () {
+            $('#createStudentForm').on('submit', function (e) {
+                e.preventDefault(); 
 
+                var formData = new FormData(this); // Create FormData object from the form
 
-<script>
-
-    $(document).ready(function (){
-
-        $("#Create").submit(function (e) {
-          e.preventDefault();
-          console.log("----------------------");
-
-
-            $.ajax({
-                type: "POST",
-                url: "JqueryAjaxFormData",
-                crossDomain: true,
-                data: new FormData(this),
-                processData: false,
-                contentType: false,
-                headers: {
-                    "Accept": "application/json"
-                }
-            }).done(function (res) {
-                console.log(res,"inside success")
-                window.location.href = "Index"
-            }).fail(function (res) {
-                console.log(res)
-                $(".message").text(res.responseJSON.message);
+                $.ajax({
+                    url: '@Url.Action("Create", "Student")', // Server-side endpoint
+                    type: 'POST',
+                    data: formData,
+                    processData: false, // Prevent jQuery from converting data into a query string
+                    contentType: false, // Let the browser set the correct content type (multipart/form-data)
+                    success: function (response) {
+                        // Display success message or redirect
+                        $('#responseMessage').html('<div class="alert alert-success">Student created successfully!</div>');
+                        // Optionally redirect to the index page
+                        window.location.href = '@Url.Action("Index", "Student")';
+                    },
+                    error: function (xhr) {
+                        // Display error message
+                        var errorMessage = xhr.responseJSON?.message || "An error occurred. Please try again.";
+                        $('#responseMessage').html('<div class="alert alert-danger">' + errorMessage + '</div>');
+                    }
+                });
             });
-
         });
-      });
-    
-    function createStudent(){
+    </script>
+	
+	@* <script src="~/lib/jquery/dist/jquery.min.js"></script> *@
+	@* <script src="~/lib/jquery/dist/jquery.js"></script> *@
+	@* <script src="~/js/custom.js"></script> *@
 
-        // $().submit(function (e) {
-        //   e.preventDefault();
 
-        var email = $('#Email'+"hello").val();
-        var name = $('#Name').val()+"fromajax";
-        var phone = $('#Phone').val();
-        var major = $('#Major').val();
-        var cgpa = $('#Cgpa').val();
-        name = "alex";
-        console.log("----------------------");console.log("----------------------");console.log("----------------------");
-
-        $.ajax({
-            url: '@Url.Action("Create","Student")',
-            type: 'POST',
-            dataType:'json',
-            data:{
-                Name: name,
-                Email: email,
-                Phone: phone,
-                Major: major,
-                Cgpa: cgpa
-            },
-            success:function(response){
-                console.log("Success");
-            },
-            error:function(xhr, status, error){
-                console.log("error");
-            }
-        })
-    }
-
-</script>
+}

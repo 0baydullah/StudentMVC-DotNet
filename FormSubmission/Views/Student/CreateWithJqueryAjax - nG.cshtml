@@ -1,0 +1,153 @@
+﻿@model FormSubmission.Models.Entities.Student
+@using FormSubmission.Models.Entities
+
+@{
+    ViewData["Title"] = "CreateWithJqueryAjax";
+}
+
+<h1>CreateWithJqueryAjax</h1>
+
+<h4>Student</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" id="CreateForm">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" id="Name"/>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" id="Email"/>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label"></label>
+                <input asp-for="Phone" class="form-control" id="Phone"/>
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Major" class="control-label"></label>
+                <select asp-for="Major" class="form-control" id="Major" asp-items="Html.GetEnumSelectList<Major>()"><option value="" selected disabled>Select Major</option>Major</select>
+                <span asp-validation-for="Major" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cgpa" class="control-label"></label>
+                <input asp-for="Cgpa" class="form-control" id="Cgpa" />
+                <span asp-validation-for="Cgpa" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <button onclick="createStudent()" class="btn btn-primary">Create</button>
+            </div>
+			
+        </form>
+
+        <h3 id="test">show data </h3>
+		
+        
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+    <script>
+
+
+                function createStudent() {
+            console.log("==================================================");
+
+            // Attach the submit handler to the form
+            $('#CreateForm').submit(function (e) { // Ensure the correct form ID is used
+                e.preventDefault(); // Prevent the default form submission behavior
+
+                // Collect form data
+                var email = $('#Email').val(); // Removed the unnecessary "hello"
+                var name = $('#Name').val(); // Use the value entered in the form
+                var phone = $('#Phone').val();
+                var major = $('#Major').val();
+                var cgpa = $('#Cgpa').val();
+
+     
+
+                console.log("----------------------");
+                console.log("Email:", email);
+                console.log("Name:", name);
+                console.log("Phone:", phone);
+                console.log("Major:", major);
+                console.log("CGPA:", cgpa);
+                console.log("----------------------");
+
+                // Perform the AJAX request
+                $.ajax({
+                    url: '/Student/Create', // Use the correct URL for the action
+                    type: 'POST',
+                    dataType: 'application/json',
+                    headers: {
+                        "Accept": "application/json"
+                    },
+                    // data: new FormData(this),
+                    data: {
+                        Name: name,
+                        Email: email,
+                        Phone: phone,
+                        Major: major,
+                        Cgpa: cgpa
+                    },
+                    success: function (data){
+                        console.log(data,"inside success")
+                        window.location.href = "Index"
+                    },
+                    error:function (error){
+                        console.log("errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr")
+
+                    }
+
+                });
+            //    $("#test").text(data.Name);
+            });
+        }
+
+        
+
+    </script>
+}
+
+
+
+
+             $(document).ready(function (){
+
+        $("#Create").submit(function (e) {
+          e.preventDefault();
+          console.log("----------------------");
+
+
+            $.ajax({
+                type: "POST",
+                url: "JqueryAjaxFormData",
+                crossDomain: true,
+                data: new FormData(this),
+                processData: false,
+                contentType: false,
+                headers: {
+                    "Accept": "application/json"
+                }
+            }).done(function (res) {
+                console.log(res,"inside success")
+                window.location.href = "Index"
+            }).fail(function (res) {
+                console.log(res)
+                $(".message").text(res.responseJSON.message);
+            });
+
+        });
+      });
