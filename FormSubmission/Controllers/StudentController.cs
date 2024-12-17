@@ -51,8 +51,7 @@ namespace FormSubmission.Controllers
             return View();
         }
 
-        // GET: Student/Create
-        // Create with html helper
+        
 
         public IActionResult CreateWithHtmlHelper()
         {
@@ -97,26 +96,11 @@ namespace FormSubmission.Controllers
         }
 
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create1(Student student)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(student);
-                await _context.SaveChangesAsync();
-                return Json(new { success = true, message = "Student created successfully!" });
-            }
-
-            var errorMessages = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
-            return BadRequest(new { success = false, message = string.Join(", ", errorMessages) });
-        }
 
 
-        // POST: Student/Create with tag helper
 
         [HttpPost]
-        public async Task<IActionResult> Create(Student student)
+        public async Task<IActionResult> Create([FromBody] Student student)
         {
             if (ModelState.IsValid)
             {
@@ -126,6 +110,9 @@ namespace FormSubmission.Controllers
             }
             return View(student);
         }
+
+
+
 
 
 
@@ -151,9 +138,9 @@ namespace FormSubmission.Controllers
             return View(student);
         }
 
-        // POST: Student/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Email,Phone,Major,Cgpa")] Student student)
@@ -186,7 +173,10 @@ namespace FormSubmission.Controllers
             return View(student);
         }
 
-        // GET: Student/Delete/5
+
+
+        // details view
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -204,7 +194,9 @@ namespace FormSubmission.Controllers
             return View(student);
         }
 
-        // POST: Student/Delete/5
+
+
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

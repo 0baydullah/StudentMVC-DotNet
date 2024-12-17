@@ -10,7 +10,7 @@
 <div class="row">
     <div class="col-md-6">
         <form id="createStudentForm">
-            @Html.AntiForgeryToken() <!-- CSRF Token -->
+			@*       @Html.AntiForgeryToken() <!-- Anti-forgery token -->*@
 
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
@@ -29,7 +29,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="Major" class="control-label"></label>
-                <select asp-for="Major" class="form-control" id="Major" asp-items="Html.GetEnumSelectList<Major>()"><option value="" selected disabled>Select Major</option>Major</select>
+                <select asp-for="Major" class="form-control" id="Major" asp-items="Html.GetEnumSelectList<Major>()">
+                    <option value="" selected disabled>Select Major</option>
+                </select>
                 <span asp-validation-for="Major" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -41,57 +43,64 @@
                 <button type="submit" class="btn btn-primary" id="submitButton">Create</button>
             </div>
         </form>
-        <div id="responseMessage"></div>
     </div>
 </div>
 
+<div id="responseMessage"></div>
+
 @section Scripts {
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script>
-            // Function to serialize form data into JSON
-            $.fn.serializeFormJSON = function () {
-                var formData = {};
-                var formArray = this.serializeArray();
-                $.each(formArray, function () {
-                    if (formData[this.name]) {
-                        if (!formData[this.name].push) {
-                            formData[this.name] = [formData[this.name]];
-                        }
-                        formData[this.name].push(this.value || '');
-                    } else {
-                        formData[this.name] = this.value || '';
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        
+        $.fn.serializeFormJSON = function () {
+            var formData = {};
+            var formArray = this.serializeArray();
+            $.each(formArray, function () {
+                if (formData[this.name]) {
+                    if (!Array.isArray(formData[this.name])) {
+                        formData[this.name] = [formData[this.name]];
+                    }
+                    formData[this.name].push(this.value);
+                } else {
+                    formData[this.name] = this.value;
+                }
+            });
+            return formData;
+        };
+
+       
+
+
+        $(document).ready(function () {
+            $('#createStudentForm').on('submit', function (e) {
+                e.preventDefault();
+
+                
+                var formData = $(this).serializeFormJSON();
+                console.log(JSON.stringify(formData));
+
+
+         //       var token = $('input[name="__RequestVerificationToken"]').val();
+
+                $.ajax({
+                    url: '@Url.Action("Create", "Student")',
+                    type: 'POST',
+                    contentType: false,
+                    processData: false,
+                 //   headers: { 'RequestVerificationToken': token }, 
+                    data: JSON.stringify(formData), 
+                  //  data: formData, 
+                    success: function (response) {
+                        console.log("Success:", response);
+                        $('#responseMessage').html('<div class="alert alert-success">Student created successfully!</div>');
+                        window.location.href = '/Student/Index';
+                    },
+                    error: function (xhr) {
+                        console.error("Error:", xhr.responseJSON?.message || xhr.responseText);
+                        $('#responseMessage').html('<div class="alert alert-danger">' + (xhr.responseJSON?.message || "An error occurred.") + '</div>');
                     }
                 });
-                return formData;
-            };
-
-            // AJAX Form Submission
-            $(document).ready(function () {
-                $('#createStudentForm').on('submit', function (e) {
-                    e.preventDefault(); // Prevent form submission
-
-                    // Serialize form data into JSON
-                    var formData = $(this).serializeFormJSON();
-
-                    
-
-                    $.ajax({
-                        url: '/Student/Create', // Endpoint for creating a student
-                        type: 'POST',
-                        contentType: 'application/json', // Send data as JSON
-                        data: JSON.stringify(formData), // Convert JSON object to string
-                        success: function (response) {
-                            console.log("Success:", response);
-                            $('#responseMessage').html('<div class="alert alert-success">Student created successfully!</div>');
-                            // Optionally redirect to another page
-                            window.location.href = '/Student/Index';
-                        },
-                        error: function (xhr) {
-                            console.error("Error:", xhr.responseJSON?.message || xhr.responseText);
-                            $('#responseMessage').html('<div class="alert alert-danger">' + (xhr.responseJSON?.message || "An error occurred.") + '</div>');
-                        }
-                    });
-                });
             });
-        </script>
+        });
+    </script>
 }

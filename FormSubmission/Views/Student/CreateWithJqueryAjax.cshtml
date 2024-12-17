@@ -5,7 +5,7 @@
     ViewData["Title"] = "CreateWithJqueryAjax";
 }
 
-<h1>CreateWithJqueryAjax nwt</h1>
+<h1>CreateWithJqueryAjax</h1>
 
 <h4>Student</h4>
 <hr />
@@ -53,22 +53,23 @@
             $('#createStudentForm').on('submit', function (e) {
                 e.preventDefault(); 
 
-                var formData = new FormData(this); // Create FormData object from the form
+                var formData = new FormData(this); 
 
                 $.ajax({
-                    url: '@Url.Action("Create", "Student")', // Server-side endpoint
+                    url: '@Url.Action("Create", "Student")',
                     type: 'POST',
                     data: formData,
-                    processData: false, // Prevent jQuery from converting data into a query string
-                    contentType: false, // Let the browser set the correct content type (multipart/form-data)
+                    processData: false, 
+                    contentType: false, 
                     success: function (response) {
-                        // Display success message or redirect
+
                         $('#responseMessage').html('<div class="alert alert-success">Student created successfully!</div>');
-                        // Optionally redirect to the index page
+                        
+
                         window.location.href = '@Url.Action("Index", "Student")';
                     },
                     error: function (xhr) {
-                        // Display error message
+
                         var errorMessage = xhr.responseJSON?.message || "An error occurred. Please try again.";
                         $('#responseMessage').html('<div class="alert alert-danger">' + errorMessage + '</div>');
                     }

@@ -83,7 +83,7 @@ namespace StudentMVC.Controllers
             context.Update(std);
             context.SaveChanges();
 
-            context.Addresses.Remove(willbedeleted);
+            context.Addresses.Remove(std.Address);
             context.SaveChanges();
 
             return RedirectToAction("Index");
