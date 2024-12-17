@@ -95,13 +95,23 @@ namespace FormSubmission.Controllers
             return View();
         }
 
+        // GET: Student/Create2
+        // Create with CreateWithHtmlSerializeFromData
+
+        public IActionResult Create2()
+        {
+            ModelState.Clear();
+            return View();
+        }
 
 
 
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Student student)
+        public async Task<IActionResult> Create(Student student)
         {
+
+            var req = Request;
             if (ModelState.IsValid)
             {
                 _context.Add(student);
@@ -112,7 +122,18 @@ namespace FormSubmission.Controllers
         }
 
 
-
+        [HttpPost]
+      //  [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create2([FromBody] Student student)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(student);
+                await _context.SaveChangesAsync();
+                return Json(new { success = true, message = "Student created successfully!" });
+            }
+            return BadRequest(new { message = "Invalid data provided.", errors = ModelState.Values });
+        }
 
 
 
