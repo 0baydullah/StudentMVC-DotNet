@@ -1,48 +1,51 @@
 ﻿@model FormSubmission.Models.Entities.Student
 @using FormSubmission.Models.Entities
 
-@{
-    ViewData["Title"] = "Create Student";
-}
 
 <h1>Create Student CreateWithJqueryAjaxSerializeFormJson</h1>
 
 <div class="row">
     <div class="col-md-6">
         <form id="createStudentForm">
-			       @* @Html.AntiForgeryToken() <!-- Anti-forgery token -->     ( ((*@
 
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" id="Name" />
+                <input asp-for="Name" class="form-control" id="Name" required/>
                 @* <input asp-for="Id" class="form-control" id="Id" value="1"/> *@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" id="Email" />
+                <input asp-for="Email" class="form-control" id="Email" required/>
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
+            
             <div class="form-group">
                 <label asp-for="Phone" class="control-label"></label>
-                <input asp-for="Phone" class="form-control" id="Phone" />
+                <input asp-for="Phone" class="form-control" id="Phone" required/>
                 <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Major" class="control-label"></label>
-                <select asp-for="Major" class="form-control" id="Major" asp-items="Html.GetEnumSelectList<Major>()">
+                <select asp-for="Major" class="form-control" id="Major" asp-items="Html.GetEnumSelectList<Major>()" required>
                     <option value="" selected disabled>Select Major</option>
                 </select>
                 <span asp-validation-for="Major" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Cgpa" class="control-label"></label>
-                <input asp-for="Cgpa" class="form-control" id="Cgpa" />
+                <input asp-for="Cgpa" class="form-control" id="Cgpa" required />
                 <span asp-validation-for="Cgpa" class="text-danger"></span>
             </div>
+
+
             <div class="form-group">
                 <button type="submit" class="btn btn-outline-warning" id="submitButton">Create</button>
             </div>
+
         </form>
     </div>
 </div>
@@ -52,26 +55,7 @@
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
-        
-        // $.fn.serializeFormJSON = function () {
-        //     var formData = {};
-        //     var formArray = this.serializeArray();
-        //     $.each(formArray, function () {
-        //         if (formData[this.name]) {
-        //             if (!Array.isArray(formData[this.name])) {
-        //                 formData[this.name] = [formData[this.name]];
-        //             }
-        //             formData[this.name].push(this.value);
-        //         } else {
-        //             formData[this.name] = this.value;
-        //         }
-        //     });
-        //     return formData;
-        // };
-
        
-
-
         $(document).ready(function () {
             $('#createStudentForm').on('submit', function (e) {
                 e.preventDefault();
@@ -82,26 +66,18 @@
 
 
 
-
                 console.log(JSON.stringify(formData));
                 console.log(formData);
 
 
-
-
-         //       var token = $('input[name="__RequestVerificationToken"]').val();
-
                 $.ajax({
                     url: '@Url.Action("Create", "Student")',
-                    type: 'POST',
-                  //  contentType:  'application/json',
-                  //  processData: false,
-                  //  headers: { 'RequestVerificationToken': token },  
+                    type: 'post',
+                    processData: false, 
                     data: formData, 
                   //  data: formData, 
                     success: function (response) {
-                        console.log("Success:", response);
-                        $('#responseMessage').html('<div class="alert alert-success">Student created successfully!</div>');
+
                         window.location.href = '/Student/Index';
                     },
                     error: function (xhr) {

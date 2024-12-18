@@ -19,13 +19,13 @@ namespace FormSubmission.Controllers
             _context = context;
         }
 
-        // GET: Student
+        // method for students page shows all students
         public async Task<IActionResult> Index()
         {
             return View(await _context.students.ToListAsync());
         }
 
-        // GET: Student/Details/5
+        // method for show details of a student
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -43,7 +43,7 @@ namespace FormSubmission.Controllers
             return View(student);
         }
 
-        // GET: Student/Create
+        // method for showing student create form
         // Create with Tag helper
 
         public IActionResult Create()
@@ -51,15 +51,17 @@ namespace FormSubmission.Controllers
             return View();
         }
 
-        
 
+
+        // method for showing student create form
         public IActionResult CreateWithHtmlHelper()
         {
             ModelState.Clear();
             return View();
         }
 
-        // GET: Student/Create
+
+        // method for showing student create form
         // Create with Ajax Beginform
 
         public IActionResult CreateWithAjaxBeginForm()
@@ -68,7 +70,7 @@ namespace FormSubmission.Controllers
             return View();
         }
 
-        // GET: Student/Create
+        // method for showing student create form
         // Create with JqueryAjax
 
         public IActionResult CreateWithJqueryAjax()
@@ -77,7 +79,7 @@ namespace FormSubmission.Controllers
             return View();
         }
 
-        // GET: Student/Create
+        // method for showing student create form
         // Create with CreateWithJqueryAjaxSerializeFormJson
 
         public IActionResult CreateWithJqueryAjaxSerializeFormJson()
@@ -86,7 +88,7 @@ namespace FormSubmission.Controllers
             return View();
         }
 
-        // GET: Student/Create
+        // method for showing student create form
         // Create with CreateWithHtmlFormAction&FormMethod
 
         public IActionResult CreateWithHtmlFormActionFormMethod()
@@ -95,7 +97,7 @@ namespace FormSubmission.Controllers
             return View();
         }
 
-        // GET: Student/Create2
+        // this action method was created for testing
         // Create with CreateWithHtmlSerializeFromData
 
         public IActionResult Create2()
@@ -122,9 +124,12 @@ namespace FormSubmission.Controllers
         }
 
 
+
+        // this action method was created for testing
+         
         [HttpPost]
       //  [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create2([FromBody] Student student)
+        public async Task<IActionResult> Create2(Student student)
         {
             if (ModelState.IsValid)
             {
@@ -143,7 +148,7 @@ namespace FormSubmission.Controllers
 
 
 
-        // GET: Student/Edit/5
+        // method for showing student edit form
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -196,7 +201,7 @@ namespace FormSubmission.Controllers
 
 
 
-        // details view
+        // delete view
 
         public async Task<IActionResult> Delete(int? id)
         {
@@ -238,3 +243,26 @@ namespace FormSubmission.Controllers
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//                             [Actions]
