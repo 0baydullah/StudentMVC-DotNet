@@ -29,31 +29,31 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var student in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                @Html.DisplayFor(modelItem => student.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Email)
+                @Html.DisplayFor(modelItem => student.Email)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Phone)
+                @Html.DisplayFor(modelItem => student.Phone)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Major)
+                @Html.DisplayFor(modelItem => student.Major)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Cgpa)
+                @Html.DisplayFor(modelItem => student.Cgpa)
             </td>
             <td>
-                    <a class="btn btn-light" asp-controller="Student" asp-action="Edit" asp-route-id="@item.Id">
+                    <a class="btn btn-light" asp-controller="Student" asp-action="Edit" asp-route-id="@student.Id">
                         <i class="text-danger fa-solid fa-user-pen"></i>
                     </a>
-                    <a class="btn btn-light" asp-controller="Student" asp-action="Delete" asp-route-id="@item.Id">
+                    <a class="btn btn-light" asp-controller="Student" asp-action="Delete" asp-route-id="@student.Id">
                         <i class="text-danger fa-solid fa-trash"></i>
                     </a>
-                    <a class="btn btn-light" asp-controller="Student" asp-action="Details" asp-route-id="@item.Id">
+                    <a class="btn btn-light" asp-controller="Student" asp-action="Details" asp-route-id="@student.Id">
                         <i class="text-danger fa-solid fa-circle-info"></i>
                     </a>
 
