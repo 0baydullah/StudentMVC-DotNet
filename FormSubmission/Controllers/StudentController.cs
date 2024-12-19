@@ -241,6 +241,24 @@ namespace FormSubmission.Controllers
         {
             return _context.students.Any(e => e.Id == id);
         }
+
+
+        
+        //            Task(Use single return for conditional scopes)
+
+        public IActionResult ReturnTask(Student student)
+        {
+            var isSuccess = ModelState.IsValid;
+            var message = isSuccess ? "Success.......!!" : "Task failed successfully";
+
+            if (isSuccess)
+            {
+                _context.students.Add(student);
+                _context.SaveChanges();
+            }
+
+            return Json(new { success = isSuccess , message = message });
+        }
     }
 }
 
